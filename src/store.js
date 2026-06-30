@@ -1,3 +1,4 @@
+import { delay } from 'lodash';
 import Vue from 'vue/dist/vue.js'
 import Vuex from 'vuex';
 Vue.use(Vuex);
@@ -35,3 +36,15 @@ export default new Vuex.Store({
         }
     }
 })
+
+function debounce(fn, delay) {
+    let timer;
+    return function (...arg){
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(function (){
+            fn(arg);
+        }, delay)
+    }
+}
+
+debounce()
