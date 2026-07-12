@@ -1,0 +1,102 @@
+import { Children } from "react"
+
+数组去重，set是什么样的数据结构
+就是一个集合啊
+[...new Set([1,1,2])]
+
+手写一个深拷贝
+function deepClone (obj){
+    if (obj === null || typeof obj !== 'object') return obj;
+    const res = Array.isArray(obj) ? [] : {};
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            res[key] = deepClone(obj[key]);
+        }
+    }
+  return res;
+}
+
+function deepclone2(obj){
+    if(obj === null || typeof obj!== 'object') return obj;
+    const res = Array.isArray(obj) ? []: {};
+    for (let key in obj){
+        if(obj.hasOwnProperty(key)){
+            res[key] = deepClone(obj[key]);
+        }
+    }
+}
+
+
+function deepclone3(obj){
+    if(typeof obj !== 'object' || typeof obj === null){
+        return obj;
+    }
+
+    const res = Array.isArray(obj) ? []: {};
+    for(let key in obj){
+        if(obj.hasOwnProperty(key)){
+            res = deepClone(res[key]);
+        }
+    }
+    return res;
+}
+
+
+
+
+function arrayToTree(){
+
+}
+
+// 数组扁平化
+
+function flattenArray(arr1){
+    let newArr = [];
+    arr1.forEach(item => {
+        if(Array.isArray(item)){
+            newArr.concat(flattenArray(item));
+        }
+        else newArr.push(item);
+    })
+    return newArr;
+}
+
+
+function arrayToTreeByobj(arr, rootParentId = 0){
+    const nodeObj = {};
+    const tree = [];
+    arr.forEach(item => {
+        nodeObj[item[id]] = {...item, children: []}
+    })
+    
+    arr.forEach(item => {
+        const currentNode = nodeObj(item.id);
+        const parentNode = nodeObj(item.parentId);
+
+        if(parentNode){
+            parentNode.children.push(currentNode)
+        }else if(item.parentId === rootParentId){
+            tree.push(currentNode);
+        }
+    })
+
+    return tree;
+}
+
+function throttle(fn, delay){
+    let last, deferTimer;
+    return function (args){
+        let now = +new Date();
+        if(last && now < last + delay){
+            clearTimeout(deferTimer)
+            deferTimer = setTimeout(function () {
+                last = now;
+                fn(...args);
+            }, delay)
+        }else {
+            last = now;
+            fn(...args);
+        }
+    }
+}
+
